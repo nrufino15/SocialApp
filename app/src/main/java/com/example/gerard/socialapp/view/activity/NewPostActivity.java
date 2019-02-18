@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -311,5 +312,22 @@ public class NewPostActivity extends AppCompatActivity {
             mRecorder.release();
             mRecorder = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // guardar en el outState la url de la imagen que se esta mostrando en el imageview
+        //onSaveInstanceState();
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // restauras en el imageview la url de la imagen que habias guardado
     }
 }
