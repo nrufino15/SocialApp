@@ -319,9 +319,7 @@ public class NewPostActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         // guardar en el outState la url de la imagen que se esta mostrando en el imageview
-        //onSaveInstanceState();
-
-
+        outState.putString("MEDIA_URI", mediaUri.toString());
     }
 
     @Override
@@ -329,5 +327,8 @@ public class NewPostActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         // restauras en el imageview la url de la imagen que habias guardado
+        if (savedInstanceState != null) {
+            mediaUri = Uri.parse(savedInstanceState.getString("MEDIA_URI"));
+        }
     }
 }
