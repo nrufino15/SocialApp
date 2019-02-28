@@ -42,6 +42,7 @@ public class NewPostActivity extends AppCompatActivity {
     static final int RC_IMAGE_PICK = 9000;
     static final int RC_VIDEO_PICK = 9001;
     static final int RC_AUDIO_PICK = 9002;
+    static final String MEDIA_URI = "uri";
 
     static final int REQUEST_RECORD_AUDIO_PERMISSION = 1212;
     private boolean permissionToRecordAccepted = false;
@@ -71,6 +72,14 @@ public class NewPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
+        // restauras en el imageview la url de la imagen que habias guardado
+        if (savedInstanceState != null) {
+            mediaUri = Uri.parse(savedInstanceState.getString(MEDIA_URI));
+        } else {
+            // Probably initialize members with default values for a new instance
+
+        }
+
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
 
@@ -141,6 +150,7 @@ public class NewPostActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), RC_AUDIO_PICK);
             }
         });
+
     }
 
     @Override
@@ -317,18 +327,20 @@ public class NewPostActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         // guardar en el outState la url de la imagen que se esta mostrando en el imageview
-        outState.putString("MEDIA_URI", mediaUri.toString());
+        if(mediaUri != null){
+            outState.putString(MEDIA_URI, mediaUri.toString());
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        // restauras en el imageview la url de la imagen que habias guardado
-        if (savedInstanceState != null) {
-            mediaUri = Uri.parse(savedInstanceState.getString("MEDIA_URI"));
+        if(savedInstanceState.getString(MEDIA_URI) != null) {
+            mediaUri = Uri.parse(savedInstanceState.getString(MEDIA_URI));
+            GlideApp.with(this).load(mediaUri).into(imagePreview);
         }
+
     }
 }
